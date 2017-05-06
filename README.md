@@ -4,7 +4,9 @@ Scripts and commands we used in our study : Comprehensive analysis of RNA-sequen
 
 # VJ recombinations across GTEx samples
 
-Inferred VJ recombinations are freely available at https://smangul1.github.io/recycle-RNA-seq/. 
+Inferred VJ recombinations are freely available at 
+- https://github.com/smangul1/recycle-RNA-seq/blob/master/IGK_VJ_recomb.csv
+- https://github.com/smangul1/recycle-RNA-seq/blob/master/IGL_VJ_recomb.csv
 
 ## Uncategorized reads  
 
