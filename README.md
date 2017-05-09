@@ -46,13 +46,16 @@ https://sergheimangul.wordpress.com/rop/repeats/
 
 The prepared repeat annotations contain 8 Classes and 43 Families.  Number of elements per family and class are available  from the table below:
 
-| classID | DNA | N |
-| --- | ---| --- |
-| 458223 | LINE | 1478382 |
-| LTR | 707384 | RC |
-| 2226 | SVA | 3582 |
-| RNA | 717 | Satellite |
-| 8950 | SINE | 1765403 | 
+| classID |  N |
+| DNA | 458223 |
+| --- | ---| 
+|  | LINE | 1478382 |
+| LTR | 707384 | 
+| RC | | 2226 | 
+| SVA | 3582 |
+| RNA | 717 | 
+| Satellite | 8950 | 
+| SINE | 1765403 | 
 
 
 
