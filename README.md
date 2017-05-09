@@ -48,7 +48,6 @@ The prepared repeat annotations contain 8 Classes and 43 Families.  Number of el
 
 | classID | DNA | N |
 | --- | ---| --- |
-
 | 458223 | LINE | 1478382 |
 | LTR | 707384 | RC |
 | 2226 | SVA | 3582 |
