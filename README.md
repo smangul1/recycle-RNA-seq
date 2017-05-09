@@ -16,7 +16,7 @@ Uncategorized reads (i.e. RNA-seq reads not categoried by ROP) from SRA samples 
 
 
 # Workflow to categorize the mapped reads
-Map reads onto human genome and transcriptome  
+## Map reads onto human genome and transcriptome  
 We mapped reads onto the human transcriptome (Ensembl GRCh37) and genome reference (Ensembl hg19) using tophat2 (v 2.0.13) with the default parameters. Tophat2 was supplied with a set of known transcripts (as a GTF formatted file, Ensembl GRCh37) using –G option.  The mapped reads of each sample are stored in a binary format (.bam).  
 
 ## Categorize mapped reads into genomic categories
@@ -32,3 +32,40 @@ Next, we checked the compatibility of the mapped reads with the defined genomic 
 - Read mapped outside of gene boundaries and beyond the proximity of 1Kb is defined as a deep inter-genic read.
 - Read mapped to mitochondrial DNA (MT tag in hg19) is classified as a mitochondrial read.
 - Reads from a pair mapped to different chromosomes are classified as a fusion read.
+
+More details are available at https://github.com/smangul1/rop/wiki/ROP-output-details
+
+
+# Categorize mapped reads overlapping repeat instances 
+
+Mapped reads were categorized based on the overlap with the repeat instances defined by RepeatMasker annotation (Repeatmasker v3.3, Repeat Library 20120124). RepeatMasker masks the repeats using the RepBase library: (http://www.girinst.org/repbase/update/index.html), which contains prototypic sequences representing repetitive DNA from different eukaryotic species. We use GTF files generated from the RepeatMasker annotations by Jin, Ying, et al. (Jin et al., 2015) and downloaded from: 
+http://labshare.cshl.edu/shares/mhammelllab/www-data/TEToolkit/TE_GTF/hg19_rmsk_TE.gtf.gz 
+
+Following  Melé, Marta, et al. (2015), repeat elements overlapping CDS regions are excluded from the analysis. We filtered out 6,873 repeat elements overlapping CDS regions. Prepared repeat annotations (bed formatted file) are available here:
+https://sergheimangul.wordpress.com/rop/repeats/
+
+The prepared repeat annotations contain 8 Classes and 43 Families.  Number of elements per family and class are available  from the table below:
+
+| classID | DNA | N |
+| --- | ---| --- |
+
+| 458223
+LINE
+1478382
+LTR
+707384
+RC
+2226
+SVA
+3582
+RNA
+717
+Satellite
+8950
+SINE
+1765403
+
+
+
+
+
