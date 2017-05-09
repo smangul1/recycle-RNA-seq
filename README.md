@@ -36,7 +36,7 @@ Next, we checked the compatibility of the mapped reads with the defined genomic 
 More details are available at https://github.com/smangul1/rop/wiki/ROP-output-details
 
 
-# Categorize mapped reads overlapping repeat instances 
+## Categorize mapped reads overlapping repeat instances 
 
 Mapped reads were categorized based on the overlap with the repeat instances defined by RepeatMasker annotation (Repeatmasker v3.3, Repeat Library 20120124). RepeatMasker masks the repeats using the RepBase library: (http://www.girinst.org/repbase/update/index.html), which contains prototypic sequences representing repetitive DNA from different eukaryotic species. We use GTF files generated from the RepeatMasker annotations by Jin, Ying, et al. (Jin et al., 2015) and downloaded from: 
 http://labshare.cshl.edu/shares/mhammelllab/www-data/TEToolkit/TE_GTF/hg19_rmsk_TE.gtf.gz 
@@ -56,6 +56,11 @@ The prepared repeat annotations contain 8 Classes and 43 Families.  Number of el
 | RNA | 717 | 
 | Satellite | 8950 | 
 | SINE | 1765403 | 
+
+
+## Categorize mapped reads overlapping B cell receptor (BCR) and T cell receptor (TCR) loci
+
+We used the gene annotations (Ensembl GRCh37) to extract BCR and TCR genes. We extracted gene annotations of the ‘constant’ (labeled as IG_C_gene, Ensembl GRCh37), ‘variable’ (labeled as IG_V_gene, Ensembl GRCh37), ‘diversity’ (labeled as IG_D_gene, Ensembl GRCh37), and ‘joining’ genes (labeled as IG_J_gene, Ensembl GRCh37) of BCR and TCR loci.  We excluded the BCR and TCR pseudogenes (labeled as IG_C_pseudogene, IG_V_pseudogene, IG_D_pseudogene, IG_J_pseudogene, TR_C_pseudogene, TR_V_pseudogene, TR_D_pseudogene, and TR_J_pseudogene). In addition, we excluded the patch contigs HG1592_PATCH and HG7_PATCH, as they are not part of the Ensembl hg19 reference, and reads are not mapped on the patch contigs by high throughput aligners.  After following the filtering steps described above, we extracted a total of 386 immune genes: 207 BCR genes and 179 TCR genes.  The gene annotations for antibody genes (GTF formatted file) are available at https://drive.google.com/file/d/0Bx1fyWeQo3cObFZNT3kyQlZUS1E/view?pref=2&pli=1
 
 
 
