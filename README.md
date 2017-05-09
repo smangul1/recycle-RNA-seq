@@ -97,8 +97,10 @@ makembindex -input <fasta file> -output <index> -iformat blastdb
 
 ## B. Mapping unmapped reads onto the human references. 
 We remapped the unmapped reads to the human reference sequences using Megablast (BLAST+ 2.2.30). We mapped reads onto the following references:
-•	Reference transcriptome (known transcripts), Ensembl GRCh37
-•	Reference genome, hg19 Ensembl
+
+- Reference transcriptome (known transcripts), Ensembl GRCh37
+- Reference genome, hg19 Ensembl
+
 We prepared the index from each reference sequence using makeblastdb and makembindex. We mapped the reads separately onto each reference in the order listed above. Reads mapped to the reference genome and transcriptome were merged into a ‘lost human reads’ category. The following options were used to map the reads using Megablast: for each reference: 
 
 ```
