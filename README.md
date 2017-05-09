@@ -109,4 +109,66 @@ task = megablast, use_index = true, perc_identity = 90, outfmt = 6, max_target_s
 
 
 
+## C. Identification of hyper-edited reads 
+We have used hyper-editing pipeline (HE-pipeline http://levanonlab.ls.biu.ac.il/resources/zip), which is capable of identifying hyper-edited reads.  When running HE-pipeline, additional changes can be made to parallelize the scripts for use with UCLA's Hoffman2 cluster. Before proceeding, follow the instructions in the README that is included with the scripts to prepare the reference and provide the necessary third-party tools. Ensure that the output directory is set correctly in config_file.sh (it is acceptable to use a single output directory), and check that the list of input files has been prepared correctly.
+
+Details on how to run HE-pipeline are available here: 
+https://github.com/smangul1/rop/wiki/How-to-run-hyper-editing-pipeline 
+
+
+
+## D. Mapping unmapped reads onto the repeat sequences
+
+We filtered out the reads that failed QC and lost human reads. The remaining reads were mapped to the reference repeat sequences.  The reference repeat sequences were downloaded from Repbase v20.07 (http://www.girinst.org/repbase/). Human repeat elements (humrep.ref and  humsub.ref) were merged into a single reference. We prepared the index from the merged repeat reference using makeblastdb and makembindex from BLAST+. In total, we obtained sequences for 1,117 repeat elements. The following options were used to map the reads using the Megablast: 
+
+```
+task = megablast, use_index = true,  perc_identity = 90, outfmt = 6, max_target_seqs = 1, e-value = 1e-05. 
+```
+
+Blast hits with alignment length shorter than 80% of the read length were discarded (corresponding to 80bp of the 100bp read). 
+
+The repeat elements from humrep.ref and humsub.ref were classified into families and classes using RepeatMasker annotations (hg19_rmsk_TE_prepared_noCDS.bed). Repetitive reads identified from the unmapped reads were confirmed by directly applying Repeatmasker (Tarailo-Graovac & Chen, 2009).
+
+## E. Workflow to detect ‘non-co-linear’ reads (trans-splicing, gene fusions, and circRNAs)
+
+We divide non-co-linear reads into three categories: 
+
+-	gene fusion characterized by reads that map on different chromosomes
+-	trans-splicing events characterized by reads that map on the same chromosome, but are at least 1 Mb apart from each other 
+-	circRNAs characterized by reads that map in a head-to-tail configuration on the same chromosome
+
+To distinguish between these three categories, we make use of circExplorer2 (Zhang et al., 2016), which was recently identified as one of the best tools to detect circRNAs (Hansen et al., 2015). CircExplorer2 relies on Tophat-Fusion and thus allows also the monitoring NCL events in the same run. TopHat-Fusion (v2.0.13, bowtie1 v0.12.9) and circExplorer2 (v2.2.4) were invoked with the following commands:
+
+```
+tophat2 -o tophat-output-directory -p 4 --fusion-search --keep-fasta-order --bowtie1 --no-coverage-search bowtie1-index fastq-file
+````
+
+```
+python CIRCexplorer2 parse -t TopHat-Fusion -o circrna-output-folder  tophat-output-directory/accepted_hits.bam		
+```
+```
+python CIRCexplorer2 annotate -r ensemble-reference.txt -g genome.fa circrna-output-folder  
+```
+
+To separate potential gene and trans-fusions from the TopHat-Fusion output, we ran a ruby custom script, which is part of the ROP pipeline.
+
+## F. Mapping unmapped reads onto the V(D)J recombinations of B and T cell receptors
+
+Gene segments of B cell receptors (BCR) and T cell receptors (TCR) were imported from IMGT (International ImMunoGeneTics information system): (http://www.imgt.org/vquest/refseqh.html#V-D-J-C-sets). 
+IMGT database contains:
+
+- Variable (V) gene segments
+- Diversity (D) gene segments
+- Joining (J) gene segments 
+
+Unmapped reads categorized by step (A)-(D) were filtered out. We used IgBLAST (v. 1.4.0) with stringent e-value threshold (e-value < 10-20) to map the remaining high-quality unmapped reads onto the V(D)J regions of the of the BCR and TCR loci.  Reference files with BCR and TCR VDJ gene segments are distributed with ROP protocol and available at https://drive.google.com/folderview?id=0Bx1fyWeQo3cOTkhKdHFDb3c5MjA&usp=sharing
+
+We prepared the index from each reference sequence using makeblastdb and makembindex from BLAST+. The following options were used to map the reads using IgBLAST: 
+
+```
+-germline_db_V; germline_db_D; -germline_db_J; -organism=human; -outfmt = 7; –evalue = 1e-20
+```
+
+
+
 
