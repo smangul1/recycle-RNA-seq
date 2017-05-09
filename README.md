@@ -67,7 +67,6 @@ We used the gene annotations (Ensembl GRCh37) to extract BCR and TCR genes. We e
 | | C domain|V domain|D domain| J  domain|
 | ---| --- | --- | ---|  --- | 
 | IGH locus| 8| 55 | 38| 6|
-
 | IGK locus| 1| 46| -| 5|
 |IGL locus| 4| 37| -| 7|
 |TCRA locus| |1| 46|-| 57|
