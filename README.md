@@ -169,6 +169,24 @@ We prepared the index from each reference sequence using makeblastdb and makembi
 -germline_db_V; germline_db_D; -germline_db_J; -organism=human; -outfmt = 7; –evalue = 1e-20
 ```
 
+## G. Identification of microbial reads
+Unmapped reads mapping in step (A -(E) were filtered out. The remaining reads were high-quality non-human reads used to profile the taxonomic composition of the microbial communities. We used MetaPhlAn2 (Metagenomic Phylogenetic Analysis, v 2.0) to assign reads on microbial genes and to obtain a taxonomic profile. The database of the microbial marker genes is provided by MetaPhlAn. We run MetaPhlAn in two stages as follow: the first stage identifies the candidate microbial reads (i.e. reads hitting a marker), while the second stage profiles metagenomes in terms of relative abundances – the commands used are as follow:
+
+```
+metaphlan.py <fastq> <map> --input_type multifastq --bowtie2db bowtie2db/mpa -t reads_map --nproc 8 --bowtie2out 
+metaphlan.py --input_type blastout <bowtie2out.txt> -t rel_ab <tsv>
+```
+
+The output of the first stage is a file containing a list of candidate microbial reads with the microbial taxa assigned (.map file). The second stage outputs the taxonomic profile (taxa detected and its relative abundance, in tab separated format (.tsv file). We used taxa detected from stage 2 to extract the reads associated with it in stage 1.  
+
+In addition to MetaPhlAn2 we used to create the curated database of taxa-specific genes, we mapped the reads onto the entire reference genomes of microbial organisms. We used Megablast (BLAST+ 2.2.30) to align reads onto the collection of bacterial, viral, and eukaryotic pathogens reference genomes. Bacterial and viral genomes were downloaded from NCBI ftp://ftp.ncbi.nih.gov/ on February 1, 2015.  Genomes of eukaryotic pathogens were downloaded from EuPathDB database, which is available at: http://eupathdb.org/eupathdb/. 
+The following parameters were used for the megablast alignment:  
+
+```
+e-value = 10-5, perc_identity = 90
+```
+
+The Megablast hits shorter than 80% of the input read sequence were removed (corresponding to 80bp of the 100bp read). 
 
 
 
