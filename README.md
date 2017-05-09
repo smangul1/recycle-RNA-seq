@@ -24,9 +24,9 @@ ROP categorizes the reads into genomic categories based on the compatibility of 
 
 Next, we checked the compatibility of the mapped reads with the defined genomic features, as follows:  
 
-a.	Read mapped to multiple locations on the reference genome is categorized as a multi-mapped read.
-b.	Read fully contained within the CDS, intron, UTR3, or UTR5 boundaries of a least one transcript is classified as a CDS, intronic, UTR3, or UTR5, respectively.
-c.	Read simultaneously overlapping UTR3 and UTR5 regions is classified as a UTR read.
+- a.	Read mapped to multiple locations on the reference genome is categorized as a multi-mapped read.
+- b.	Read fully contained within the CDS, intron, UTR3, or UTR5 boundaries of a least one transcript is classified as a CDS, intronic, UTR3, or UTR5, respectively.
+- c.	Read simultaneously overlapping UTR3 and UTR5 regions is classified as a UTR read.
 d.	Read spanning exon-exon boundary is defined as a junction read.
 e.	Read mapped outside of gene boundaries and within a proximity of 1Kb is defined as a (proximal) inter-genic read.
 f.	Read mapped outside of gene boundaries and beyond the proximity of 1Kb is defined as a deep inter-genic read.
