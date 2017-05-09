@@ -47,8 +47,8 @@ https://sergheimangul.wordpress.com/rop/repeats/
 The prepared repeat annotations contain 8 Classes and 43 Families.  Number of elements per family and class are available  from the table below:
 
 | classID |  N |
-| DNA | 458223 |
 | --- | ---| 
+| DNA | 458223 |
 | LINE | 1478382 |
 | LTR | 707384 | 
 | RC | | 2226 | 
