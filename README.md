@@ -16,6 +16,7 @@ Uncategorized reads (i.e. RNA-seq reads not categoried by ROP) from SRA samples 
 
 
 # Workflow to categorize the mapped reads
+
 ## Map reads onto human genome and transcriptome  
 We mapped reads onto the human transcriptome (Ensembl GRCh37) and genome reference (Ensembl hg19) using tophat2 (v 2.0.13) with the default parameters. Tophat2 was supplied with a set of known transcripts (as a GTF formatted file, Ensembl GRCh37) using –G option.  The mapped reads of each sample are stored in a binary format (.bam).  
 
@@ -62,6 +63,7 @@ The prepared repeat annotations contain 8 Classes and 43 Families.  Number of el
 
 We used the gene annotations (Ensembl GRCh37) to extract BCR and TCR genes. We extracted gene annotations of the ‘constant’ (labeled as IG_C_gene, Ensembl GRCh37), ‘variable’ (labeled as IG_V_gene, Ensembl GRCh37), ‘diversity’ (labeled as IG_D_gene, Ensembl GRCh37), and ‘joining’ genes (labeled as IG_J_gene, Ensembl GRCh37) of BCR and TCR loci.  We excluded the BCR and TCR pseudogenes (labeled as IG_C_pseudogene, IG_V_pseudogene, IG_D_pseudogene, IG_J_pseudogene, TR_C_pseudogene, TR_V_pseudogene, TR_D_pseudogene, and TR_J_pseudogene). In addition, we excluded the patch contigs HG1592_PATCH and HG7_PATCH, as they are not part of the Ensembl hg19 reference, and reads are not mapped on the patch contigs by high throughput aligners.  After following the filtering steps described above, we extracted a total of 386 immune genes: 207 BCR genes and 179 TCR genes.  The gene annotations for antibody genes (GTF formatted file) are available at https://drive.google.com/file/d/0Bx1fyWeQo3cObFZNT3kyQlZUS1E/view?pref=2&pli=1
 
+The number of VDJ genes per locus is reported in the Table  bellow: 
 
 
 | | C domain|V domain|D domain| J  domain|
@@ -73,5 +75,36 @@ We used the gene annotations (Ensembl GRCh37) to extract BCR and TCR genes. We e
 |TCRB locus| 1| 39| 0| 8|
 |TRG locus| 2| 9| -| 5|
 |TRD locus| 1| 3| 11| 4|
+
+The number of reads mapping to each C-V-D-J genes was obtained by counting the number of sequencing reads that align, with high confidence, to each of the genes (HTSeq v0.6.1) (Anders et al., 2014). Script “htseq-count” is supplied with the gene annotations for BCR and TCR genes (genes_Ensembl_GRCh37_BCR_TCR.gtf) and a bam file. The bam file contains reads mapped to the human genome and transcriptome using TopHat2 (See Section “Map reads onto human genome and transcriptome” for details). The script generates individual gene counts by examining the read compatibility with BCR and TCR genes. We chose a conservative setting (--mode=intersection-strict) to handle reads overlapping more than one feature. Thus, a read overlapping several genes simultaneously is marked as a read with no feature and is excluded from the consideration. 
+
+# Workflow for categorizing the unmapped reads
+
+We first converted the unmapped reads saved by tophat2 from a BAM file into a FASTQ file (using bamtools). The FASTQ file of unmapped contain full read pairs (both ends of a read pair were unmapped) and discordant read pairs (one read end was mapped while the other end was unmapped). We disregarded the pairing information of the unmapped reads and categorize unmapped reads using the following steps:
+
+## A. Quality Control
+Low quality reads, defined as reads that have quality lower than 30 in at least 75% of their base pairs, were identified by [FASTX](http://hannonlab.cshl.edu/fastx_toolkit/) (v 0.0.13).  Low complexity reads, defined as reads with sequences of consecutive repetitive nucleotides, are identified by SEQCLEAN.  As a part of the quality control, we also excluded unmapped reads mapped onto the rRNA repeat sequence (HSU13369 Human ribosomal DNA complete repeating unit) (BLAST+ 2.2.30). We prepared the index from rRNA repeat sequence using makeblastdb and makembindex from BLAST+.  We used the following command for makeblastdb: 
+
+```
+makeblastdb -parse_seqids -dbtype nucl -in `<fasta file>`. 
+```
+
+We used the following command for makembindex: 
+
+```
+makembindex -input <fasta file> -output <index> -iformat blastdb
+```
+
+## B. Mapping unmapped reads onto the human references. 
+We remapped the unmapped reads to the human reference sequences using Megablast (BLAST+ 2.2.30). We mapped reads onto the following references:
+•	Reference transcriptome (known transcripts), Ensembl GRCh37
+•	Reference genome, hg19 Ensembl
+We prepared the index from each reference sequence using makeblastdb and makembindex. We mapped the reads separately onto each reference in the order listed above. Reads mapped to the reference genome and transcriptome were merged into a ‘lost human reads’ category. The following options were used to map the reads using Megablast: for each reference: 
+
+```
+task = megablast, use_index = true, perc_identity = 90, outfmt = 6, max_target_seqs =1, e-value = 1e-05.  
+```
+
+
 
 
