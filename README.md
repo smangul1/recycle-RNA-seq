@@ -8,9 +8,10 @@ Inferred VJ recombinations are freely available at
 - [https://github.com/smangul1/recycle-RNA-seq/blob/master/IGK_VJ_recomb.csv](https://github.com/smangul1/recycle-RNA-seq/blob/master/IGK_VJ_recomb.csv)
 - [https://github.com/smangul1/recycle-RNA-seq/blob/master/IGL_VJ_recomb.csv](https://github.com/smangul1/recycle-RNA-seq/blob/master/IGL_VJ_recomb.csv)
 
-# Bacterial taxa were assigned with Metaphlan2 
+# Bacterial taxa assigned with Metaphlan2 
 
 339 bacterial taxa were assigned with Metaphlan2  available at 
+- https://github.com/smangul1/recycle-RNA-seq/blob/master/bacteriaTaxa.txt
 
 
 # Uncategorized reads  
